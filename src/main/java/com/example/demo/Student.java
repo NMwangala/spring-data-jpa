@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-@Entity
+@Entity(name="Student")
 @Table(name = "student", uniqueConstraints = { @UniqueConstraint(columnNames = "email", name = "student_email_unique") })
 public class Student {
 
