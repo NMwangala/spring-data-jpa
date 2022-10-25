@@ -3,6 +3,8 @@ package com.example.demo;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,12 +29,22 @@ public class StudentIdCard {
 	private String cardNumber;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="student_id",referencedColumnName = "id")
+	@JoinColumn(name="student_id",referencedColumnName = "id",foreignKey =@ ForeignKey(name="student_id_fk"))
 	private Student student;
 
 	public StudentIdCard(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
+
+	
+	
+	public StudentIdCard(String cardNumber, Student student) {
+
+		this.cardNumber = cardNumber;
+		this.student = student;
+	}
+
+
 
 	public StudentIdCard() {
 		
@@ -54,10 +66,13 @@ public class StudentIdCard {
 		this.cardNumber = cardNumber;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "StudentIdCard [id=" + id + ", cardNumber=" + cardNumber + "]";
+		return "StudentIdCard [id=" + id + ", cardNumber=" + cardNumber + ", student=" + student + "]";
 	}
+
 	
 
 }

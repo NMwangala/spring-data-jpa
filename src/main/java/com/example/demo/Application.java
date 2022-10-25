@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.assertj.core.util.Arrays;
@@ -32,6 +33,8 @@ public class Application {
 			Integer age = faker.number().numberBetween(18, 55);
 			Student student = new Student(email, firstName, lastName, age);
 			studentRepository.save(student);
+			
+			
 		}
 		
 		
@@ -44,10 +47,36 @@ public class Application {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
+	CommandLineRunner commandLineRunner(StudentRepository studentRepository,StudentIdCardRepository studentIdCardRepository) {
 		return args -> {
+			Faker faker = new Faker();
 			
+			String firstName = faker.name().firstName();
+			String lastName = faker.name().lastName();
+			String email = String.format("%s.%s@amigoscode.edu", firstName,lastName);
+			Integer age = faker.number().numberBetween(18, 55);
+			Student student = new Student(email, firstName, lastName, age);
+			StudentIdCard studentIdCard = new StudentIdCard("1234567890",student);
+			student.setStudentIdCard(studentIdCard);
+			student.addBook(new Book(student, "Clean code", LocalDateTime.now()));
+			student.addBook(new Book(student, "Think and grow rich", LocalDateTime.now()));
+			student.addBook(new Book(student, "Spring data JPA", LocalDateTime.now().minusYears(1)));
 			
+			student.addEnrolment(new Enrolment(new EnrolmentId(1L,1L),student, new Course("Spring data JPA", "IT"),LocalDateTime.now()));
+			student.addEnrolment(new Enrolment(new EnrolmentId(1L,2L),student, new Course("Computer Science", "IT"),LocalDateTime.now().minusDays(4)));
+			
+//			student.enrolToCourse(new Course("Spring data JPA", "IT"));
+//			student.enrolToCourse(new Course("Computer Science", "IT"));
+			
+		
+		//	studentIdCardRepository.save(studentIdCard);
+			
+		studentRepository.save(student);
+//			studentIdCardRepository.findById(1L).ifPresent(System.out::println);
+//			
+//			studentRepository.findById(1L).ifPresent(System.out::println);
+			
+//			studentRepository.deleteById(1L);
 //			 generateRandomStudents(studentRepository);
 //			 
 //			 PageRequest pageRequest = PageRequest.of(0, 10,Sort.by("firstName"));
